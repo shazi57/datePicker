@@ -6,7 +6,7 @@
   align-items: center;
 }
 
-select{
+.form{
   outline: none;
   border: none;
   background-color: white;
@@ -16,10 +16,10 @@ select{
   font-size: 1.2em;
 }
 
-select:focus{
+.form:focus{
   border: cornflowerblue solid 2px;
 }
 
-select::after{
+.form::after{
   border: none;
 }

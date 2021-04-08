@@ -9,9 +9,16 @@ const Dropdown = (props) => {
     <div className="select-container">
       <label htmlFor="cars">{category}</label>
       <br />
-      <select onChange={onSelectChange} name={category} value={selected}>
-        {data.map((val) => <option value={val}>{val}</option>)}
-      </select>
+      {
+        (category === 'Year'
+          ? <input className="form" value={selected} name={category} onChange={onSelectChange} />
+          : (
+            <select className="form" onChange={onSelectChange} name={category} value={selected}>
+              {data.map((val) => <option value={val}>{val}</option>)}
+            </select>
+          )
+        )
+      }
     </div>
   );
 };
