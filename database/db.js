@@ -4,6 +4,7 @@ const schema = require('./schema');
 
 const db = new JSONdb(path.join(__dirname, 'databank.json'));
 
+//  Helper functions for database APIs
 const getRecent = () => (
   new Promise((resolve) => {
     if (!db.has('recent')) {
@@ -17,7 +18,7 @@ const getRecent = () => (
 const setRecent = (date) => (
   new Promise((resolve, reject) => {
     if (typeof date !== 'object') {
-      reject(new Error('data type has to be date object'));
+      reject(new Error('data type has to be in a valid schema'));
     }
 
     resolve(db.set('recent', date));

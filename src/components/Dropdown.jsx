@@ -14,7 +14,7 @@ const Dropdown = (props) => {
           ? <input className="form" value={selected} name={category} onChange={onSelectChange} />
           : (
             <select className="form" onChange={onSelectChange} name={category} value={selected}>
-              {data.map((val) => <option value={val}>{val}</option>)}
+              {data.map((val) => <option key={val.toString()} value={val}>{val}</option>)}
             </select>
           )
         )

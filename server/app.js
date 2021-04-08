@@ -36,6 +36,7 @@ app.post('/recent', (req, res) => {
 const server = app.listen(port);
 
 process.on('SIGINT', () => {
+  //  cleanup when server is closed
   deleteAll()
     .then((success) => {
       console.log(`successfully deleted all data in db ${success}`);
