@@ -18,6 +18,9 @@ module.exports = {
     'react',
   ],
   rules: {
-    'react/prop-type': 0,
+    'react/prop-types': 0,
+    requireStringLiterals: 0,
+    'no-new': 0,
+    'no-console': 0,
   },
 };

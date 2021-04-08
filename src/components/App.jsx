@@ -1,35 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import { hot } from 'react-hot-loader';
+import axios from 'axios';
 import Dropdown from './Dropdown';
 import DateDisplay from './DateDisplay';
 import '../assets/App.css';
-import Calendar from '../helper/Calendar.json';
-import ddCalculator from '../helper/ddCalculator';
+import Calendar from '../../helper/Calendar.json';
+import ddCalculator from '../../helper/ddCalculator';
 
 const App = () => {
-  const today = new Date();
-
   //  initialization
   const [chosenDate, changeDate] = useState({
-    Month: Calendar.Months[today.getMonth()],
-    Day: today.getDate(),
-    Year: today.getFullYear(),
+    Month: '',
+    Day: '',
+    Year: '',
   });
-
   const [daysFromNow, changeDayCount] = useState(0);
+  const [mounted, isMounted] = useState(false);
 
   // onChange handler for select elements.
   const onSelectChange = (e) => {
-    if (e.target.name === 'Month') {
-      changeDate({ ...chosenDate, [e.target.name]: e.target.value });
-    } else {
-      changeDate({ ...chosenDate, [e.target.name]: Number(e.target.value) });
-    }
+    changeDate({ ...chosenDate, [e.target.name]: e.target.value });
   };
+
+  // upon mounting the component, make get request to server
+  // server then pulls recently inquired data from database
+
+  useEffect(() => {
+    if (!mounted) {
+      axios.get('/recent')
+        .then((res) => {
+          const { data } = res;
+          changeDate(data);
+        })
+        .then(() => {
+          isMounted(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [mounted]);
 
   // upon changing chosenDate, calculate how many days remaining from today
   useEffect(() => {
     changeDayCount(ddCalculator(chosenDate));
+  }, [chosenDate]);
+
+  // upon changing chosenDate, update recent inquiry in the database
+  useEffect(() => {
+    if (mounted) {
+      axios.post('/recent', chosenDate)
+        .then((success) => {
+          console.log(`sent to the backend for processing ${success}`);
+        }).catch((err) => {
+          console.log(`problem with sending data to backend ${err}`);
+        });
+    }
   }, [chosenDate]);
 
   return (
