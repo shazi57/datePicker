@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+const path = require('path');
 const bodyParser = require('body-parser');
 const [deleteAll, getRecent, setRecent] = require('../database/db');
 
@@ -6,7 +8,9 @@ const app = express();
 
 const port = process.env.PORT || 8000;
 
-app.use(express.static('public'));
+app.use(cors());
+
+app.use(express.static( path.join(__dirname, '../public')));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -33,15 +37,20 @@ app.post('/recent', (req, res) => {
     });
 });
 
-const server = app.listen(port);
+const server = app.listen(port, () => {console.log(`listening to the port ${port}`)});
+
 
 process.on('SIGINT', () => {
   //  cleanup when server is closed
   deleteAll()
     .then((success) => {
       console.log(`successfully deleted all data in db ${success}`);
-      server.close(() => {
-        console.log('HTTP server closed');
-      });
-    });
+    })
+    .then(() => {
+      server.close(() => { console.log('http server is closed') });
+    })
+    .then(() => {
+      process.exit();
+    })
 });
+

@@ -6,6 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "backend-dev": "nodemon ./server/app.js",
+    "backend-prod": "node ./server/app.js",
     "react-dev": "webpack --mode development --watch",
     "build": "webpack --mode production",
     "deploy": "gh-pages -d public",
@@ -25,6 +26,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
