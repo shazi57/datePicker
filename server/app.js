@@ -10,7 +10,7 @@ const port = process.env.PORT || 8000;
 
 app.use(cors());
 
-app.use(express.static( path.join(__dirname, '../public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
@@ -37,20 +37,17 @@ app.post('/recent', (req, res) => {
     });
 });
 
-const server = app.listen(port, () => {console.log(`listening to the port ${port}`)});
-
+const server = app.listen(port, () => {
+  console.log(`listening to the port ${port}`);
+});
 
 process.on('SIGINT', () => {
   //  cleanup when server is closed
   deleteAll()
-    .then((success) => {
-      console.log(`successfully deleted all data in db ${success}`);
-    })
     .then(() => {
-      server.close(() => { console.log('http server is closed') });
-    })
-    .then(() => {
-      process.exit();
-    })
+      console.log('successfully deleted all data in db');
+      server.close(() => {
+        process.exit();
+      });
+    });
 });
-
