@@ -4,7 +4,7 @@ import axios from 'axios';
 import Dropdown from './Dropdown';
 import DateDisplay from './DateDisplay';
 import '../assets/App.css';
-import Calendar from '../../helper/Calendar.json';
+import Calendar from '../../helper/Calendar';
 import ddCalculator from '../../helper/ddCalculator';
 
 const App = () => {
@@ -30,7 +30,7 @@ const App = () => {
     changeDate({ ...chosenDate, [e.target.name]: e.target.value });
 
     //  delay change of state by 500ms to prevent meaningless API calls
-    //  if multiple keystrokes are detected within 500ms use the last event
+    //  if multiple keystrokes are detected within 500ms, use the last event
     if (timeOuts.current.length === 0) {
       timeOuts.current.push(setTimeout(() => {
         confirmDate({ ...chosenDate, [e.target.name]: e.target.value });
@@ -83,13 +83,13 @@ const App = () => {
           category="Month"
           selected={chosenDate.Month}
           onSelectChange={onSelectChange}
-          data={Object.keys(Calendar.MonthAndDays)}
+          data={Object.keys(Calendar(chosenDate.Year).MonthAndDays)}
         />
         <Dropdown
           category="Day"
           selected={chosenDate.Day}
           onSelectChange={onSelectChange}
-          data={Array.from({ length: Calendar.MonthAndDays[chosenDate.Month] },
+          data={Array.from({ length: Calendar(chosenDate.Year).MonthAndDays[chosenDate.Month] },
             (v, i) => i + 1)}
         />
         <Dropdown
